@@ -7,8 +7,12 @@ export default props => {
         const registros = props.registros || []
         return registros.map(todo => (
             <tr key={todo._id}>
-                <td>{todo.description}</td>
-                <td><IconButton style='danger' icon='trash-o' onClick={() => props.handleRemove(todo)}></IconButton></td>
+                <td className={todo.done ? 'markedAsDone' : ''}>{todo.description}</td>
+                <td>
+                    <IconButton style='success' icon='check' onClick={() => props.handleMarkAsDone(todo)} hide={todo.done}></IconButton>
+                    <IconButton style='warning' icon='undo' onClick={() => props.handleMarkAsPending(todo)} hide={!todo.done}></IconButton>
+                    <IconButton style='danger' icon='trash-o' onClick={() => props.handleRemove(todo)} hide={!todo.done}></IconButton>
+                </td>
             </tr>
         ))
     }
@@ -16,7 +20,10 @@ export default props => {
     return(
         <table className='table'>
             <thead>
-                <tr><th>Descrição</th></tr>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Ações</th>
+                </tr>
             </thead>
             <tbody>
                 {renderRows()}
